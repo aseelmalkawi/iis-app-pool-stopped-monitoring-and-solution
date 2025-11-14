@@ -1,0 +1,17 @@
+# this is a simple GitHub Action workflow that runs the Python script for iis-reset. It receives the server name as set in the Name tag in AWS
+
+name: Reset_IIS
+on:
+  workflow_dispatch:
+    inputs:
+      server_name:
+        description: 'Name of the server to reset IIS on'
+        required: true
+        type: string
+jobs:
+  iis-reset:
+    runs-on: # must use a runner server that has Python and the necessary IAM rules to execute the script. Otherwise, AWS Access and the Secret Access keys are needed
+    steps:
+      - uses: actions/checkout@v4 # cloning the cide because Actions does not see the repo
+      - name: Run IIS reset 
+        run: python iis_reset.py "${{ github.event.inputs.server_name }}"

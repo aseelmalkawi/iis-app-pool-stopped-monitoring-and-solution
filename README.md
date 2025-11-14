@@ -160,8 +160,9 @@ on:
    # Restart New Relic service
    Restart-Service newrelic-infra
    ```
+   Or as per this repo https://github.com/aseelmalkawi/automated-ansible-setup, the integration can be copied and set up for multiple servers.
 
-3. **Configure GitHub Actions (if needed):**
+3. **Configure GitHub Actions (if needed; there's no server with IAM roles):**
    - Ensure AWS credentials are set up as repository secrets:
      - `AWS_ACCESS_KEY_ID`
      - `AWS_SECRET_ACCESS_KEY`
@@ -180,8 +181,8 @@ on:
 ### Remediation Flow
 
 1. Script receives server name or instance ID
-2. If server name provided, queries EC2 for matching instance
-3. Sends PowerShell commands via SSM to target instance
+2. If the server name is provided, queries EC2 for a matching instance
+3. Sends PowerShell commands via SSM to the target instance
 4. PowerShell script on target:
    - Imports WebAdministration module
    - Iterates through all app pools

@@ -1,0 +1,18 @@
+integrations:
+  - name: nri-flex
+    config:
+      name: iisAppPools
+      apis:
+        - event_type: appPoolCheck
+          shell: powershell
+          commands:
+            - run: |
+                Get-Website | ForEach-Object {
+                  $appPool = $_.applicationPool
+                  $state = (Get-WebAppPoolState -Name $appPool).Value
+                  $status = if ($state -eq "Started") { 1 } else { 0 }
+                  [PSCustomObject]@{
+                    appPoolName   = $appPool
+                    appPoolStatus = $status
+                  }
+                } | ConvertTo-Json
